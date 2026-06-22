@@ -9,6 +9,11 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+/* Alpine: esconde elementos até a hidratação */
+[x-cloak] {
+    display: none !important;
+}
+
 /* ---------------------------------------------------------------------------
    Conteúdo rico — usado tanto no editor (.tiptap) quanto na renderização
    pública das notícias (.article-content). Portado do portal Next.js.
@@ -106,6 +111,13 @@
     height: auto;
     border: 0;
     border-radius: 0.5rem;
+}
+
+/* Área editável do TipTap no admin */
+.tiptap {
+    min-height: 320px;
+    padding: 1rem;
+    outline: none;
 }
 
 /* Placeholder do editor quando vazio */
