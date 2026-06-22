@@ -1,15 +1,23 @@
 <?php
 
+use App\Http\Controllers\Admin\AdController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentModerationController;
+use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Site\AdClickController;
+use App\Http\Controllers\Site\AdsTxtController;
 use App\Http\Controllers\Site\AuthorController;
 use App\Http\Controllers\Site\CategoryController as SiteCategoryController;
+use App\Http\Controllers\Site\CommentController;
 use App\Http\Controllers\Site\FeedController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\PostController;
@@ -32,10 +40,15 @@ Route::middleware(RecordVisit::class)->group(function () {
     Route::get('/busca', [SearchController::class, 'index'])->name('busca');
 });
 
-// SEO / feeds (sem contagem de visita)
+// Interações públicas (sem contagem de visita)
+Route::post('/noticia/{post}/comentarios', [CommentController::class, 'store'])->name('comentarios.store');
+Route::get('/ads/{ad}/click', [AdClickController::class, 'click'])->name('ads.click');
+
+// SEO / feeds
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/robots.txt', [RobotsController::class, 'index']);
 Route::get('/feed.xml', [FeedController::class, 'index']);
+Route::get('/ads.txt', [AdsTxtController::class, 'index']);
 
 // ---------------------------------------------------------------------------
 // Autenticação do painel (sessão) — apenas visitantes não logados
@@ -91,6 +104,37 @@ Route::middleware('auth')->group(function () {
             Route::get('usuarios/{user}/editar', [UserController::class, 'edit'])->name('usuarios.edit');
             Route::put('usuarios/{user}', [UserController::class, 'update'])->name('usuarios.update');
             Route::delete('usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+        });
+
+        // Comentários (moderação) e estatísticas (EDITOR/ADMIN)
+        Route::middleware('can:manage-all-posts')->group(function () {
+            Route::get('comentarios', [CommentModerationController::class, 'index'])->name('comentarios.index');
+            Route::post('comentarios/{comment}/aprovar', [CommentModerationController::class, 'approve'])->name('comentarios.approve');
+            Route::post('comentarios/{comment}/rejeitar', [CommentModerationController::class, 'reject'])->name('comentarios.reject');
+            Route::delete('comentarios/{comment}', [CommentModerationController::class, 'destroy'])->name('comentarios.destroy');
+            Route::get('estatisticas', [StatsController::class, 'index'])->name('estatisticas');
+        });
+
+        // Publicidades (ADMIN)
+        Route::middleware('can:manage-ads')->group(function () {
+            Route::get('publicidades', [AdController::class, 'index'])->name('publicidades.index');
+            Route::get('publicidades/nova', [AdController::class, 'create'])->name('publicidades.create');
+            Route::post('publicidades', [AdController::class, 'store'])->name('publicidades.store');
+            Route::get('publicidades/{ad}/editar', [AdController::class, 'edit'])->name('publicidades.edit');
+            Route::put('publicidades/{ad}', [AdController::class, 'update'])->name('publicidades.update');
+            Route::delete('publicidades/{ad}', [AdController::class, 'destroy'])->name('publicidades.destroy');
+            Route::get('publicidades/{ad}/relatorio', [AdController::class, 'report'])->name('publicidades.report');
+        });
+
+        // Configurações (ADMIN)
+        Route::middleware('can:manage-settings')->group(function () {
+            Route::get('configuracoes', [SettingsController::class, 'edit'])->name('configuracoes.edit');
+            Route::put('configuracoes', [SettingsController::class, 'update'])->name('configuracoes.update');
+        });
+
+        // Logs de auditoria (ADMIN)
+        Route::middleware('can:view-audit-logs')->group(function () {
+            Route::get('logs', [LogController::class, 'index'])->name('logs');
         });
     });
 });

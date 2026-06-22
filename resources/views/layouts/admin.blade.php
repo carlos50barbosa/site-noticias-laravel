@@ -18,11 +18,26 @@
                 @can('publish-posts')
                     <x-admin.nav-link :href="route('admin.revisao')" :active="request()->is('admin/revisao*')">Revisão</x-admin.nav-link>
                 @endcan
+                @can('manage-all-posts')
+                    <x-admin.nav-link :href="route('admin.comentarios.index')" :active="request()->is('admin/comentarios*')">Comentários</x-admin.nav-link>
+                @endcan
                 @can('manage-categories')
                     <x-admin.nav-link :href="route('admin.categorias.index')" :active="request()->is('admin/categorias*')">Categorias</x-admin.nav-link>
                 @endcan
+                @can('manage-ads')
+                    <x-admin.nav-link :href="route('admin.publicidades.index')" :active="request()->is('admin/publicidades*')">Publicidades</x-admin.nav-link>
+                @endcan
+                @can('manage-all-posts')
+                    <x-admin.nav-link :href="route('admin.estatisticas')" :active="request()->is('admin/estatisticas*')">Estatísticas</x-admin.nav-link>
+                @endcan
                 @can('manage-users')
                     <x-admin.nav-link :href="route('admin.usuarios.index')" :active="request()->is('admin/usuarios*')">Usuários</x-admin.nav-link>
+                @endcan
+                @can('view-audit-logs')
+                    <x-admin.nav-link :href="route('admin.logs')" :active="request()->is('admin/logs*')">Logs</x-admin.nav-link>
+                @endcan
+                @can('manage-settings')
+                    <x-admin.nav-link :href="route('admin.configuracoes.edit')" :active="request()->is('admin/configuracoes*')">Configurações</x-admin.nav-link>
                 @endcan
             </nav>
         </aside>

@@ -16,6 +16,8 @@
         </div>
     @endif
 
+    <x-ad placement="HOME" class="mb-8" />
+
     @if ($latest->isEmpty())
         <p class="rounded-md bg-white p-8 text-center text-slate-500 ring-1 ring-slate-200">
             Nenhuma notícia publicada ainda.

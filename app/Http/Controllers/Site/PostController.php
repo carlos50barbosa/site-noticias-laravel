@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site;
 
+use App\Enums\CommentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Support\Collection;
@@ -29,6 +30,11 @@ class PostController extends Controller
                 ->get()
             : new Collection();
 
-        return view('site.post', compact('post', 'related'));
+        $comments = $post->comments()
+            ->where('status', CommentStatus::APPROVED)
+            ->latest()
+            ->get();
+
+        return view('site.post', compact('post', 'related', 'comments'));
     }
 }

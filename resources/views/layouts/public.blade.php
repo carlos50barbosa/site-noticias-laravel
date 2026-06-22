@@ -11,6 +11,9 @@
         <link rel="icon" href="{{ $settings->favicon_url }}?v={{ $settings->updated_at?->timestamp }}">
     @endif
     @stack('head')
+    @if (app()->isProduction() && $settings->adsense_client)
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings->adsense_client }}" crossorigin="anonymous"></script>
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased">
@@ -39,6 +42,7 @@
     </header>
 
     <main class="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+        <x-ad placement="SITEWIDE" class="mb-6" />
         @yield('content')
     </main>
 

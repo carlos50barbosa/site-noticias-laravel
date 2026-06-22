@@ -80,6 +80,8 @@
                 {!! $post->content !!}
             </div>
 
+            <x-ad placement="ARTICLE" class="my-8" />
+
             @if ($post->tags->isNotEmpty())
                 <div class="mt-8 flex flex-wrap gap-2">
                     @foreach ($post->tags as $tag)
@@ -88,6 +90,45 @@
                     @endforeach
                 </div>
             @endif
+
+            {{-- Comentários --}}
+            <section class="mt-10 border-t border-slate-200 pt-6">
+                <h2 class="mb-4 text-lg font-bold text-slate-900">Comentários ({{ $comments->count() }})</h2>
+
+                @if (session('comment_status'))
+                    <div class="mb-4 rounded-md bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('comment_status') }}</div>
+                @endif
+                @if (session('comment_error'))
+                    <div class="mb-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{{ session('comment_error') }}</div>
+                @endif
+
+                <form method="POST" action="{{ route('comentarios.store', $post) }}" class="mb-6 space-y-3">
+                    @csrf
+                    <div>
+                        <input name="author_name" value="{{ old('author_name') }}" placeholder="Seu nome" required
+                               class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
+                        @error('author_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <textarea name="content" rows="3" placeholder="Escreva um comentário..." required
+                                  class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">{{ old('content') }}</textarea>
+                        @error('content')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+                    <button type="submit" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Enviar comentário</button>
+                </form>
+
+                <div class="space-y-4">
+                    @forelse ($comments as $comment)
+                        <div class="border-b border-slate-100 pb-3">
+                            <div class="text-sm font-semibold text-slate-800">{{ $comment->author_name }}</div>
+                            <div class="text-xs text-slate-400">{{ $comment->created_at?->isoFormat('D [de] MMM [de] YYYY, HH:mm') }}</div>
+                            <p class="mt-1 text-sm text-slate-700">{{ $comment->content }}</p>
+                        </div>
+                    @empty
+                        <p class="text-sm text-slate-400">Seja o primeiro a comentar.</p>
+                    @endforelse
+                </div>
+            </section>
 
             <div class="mt-10">
                 <a href="{{ route('home') }}" class="text-sm text-sky-700 hover:underline">← Voltar à home</a>
