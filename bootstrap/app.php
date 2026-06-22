@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         ]);
 
+        // Cabeçalhos de segurança em todas as respostas web.
+        $middleware->web(append: [
+            \App\Http\Middleware\SecurityHeaders::class,
+        ]);
+
         // Visitante sem sessão vai para o login do admin; logado vai para /admin.
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo('/admin');
