@@ -40,4 +40,39 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class, 'author_id');
     }
+
+    // ---- Papéis / permissões (espelham App\Enums\Role) ----------------------
+
+    public function isAdmin(): bool
+    {
+        return $this->role->isAdmin();
+    }
+
+    public function canManageUsers(): bool
+    {
+        return $this->role->canManageUsers();
+    }
+
+    public function canManageCategories(): bool
+    {
+        return $this->role->canManageCategories();
+    }
+
+    public function canPublish(): bool
+    {
+        return $this->role->canPublish();
+    }
+
+    public function canManageAllPosts(): bool
+    {
+        return $this->role->canManageAllPosts();
+    }
+
+    /**
+     * AUTHOR só edita os próprios posts; ADMIN/EDITOR editam qualquer um.
+     */
+    public function canEditPost(Post $post): bool
+    {
+        return $this->canManageAllPosts() || $post->author_id === $this->id;
+    }
 }
