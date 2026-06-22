@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Configurações do site disponíveis em todas as views públicas.
+        View::composer(['layouts.public', 'site.*'], function ($view) {
+            $view->with('settings', SiteSetting::current());
+        });
+
         // Gates de papel (verificados no servidor em toda ação).
         Gate::define('manage-users', fn (User $user) => $user->canManageUsers());
         Gate::define('manage-categories', fn (User $user) => $user->canManageCategories());
