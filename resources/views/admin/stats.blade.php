@@ -5,7 +5,7 @@
 @php($card = 'rounded-lg bg-white p-5 ring-1 ring-slate-200')
 
 @section('content')
-    <h1 class="mb-4 text-xl font-bold text-slate-900">Estatísticas</h1>
+    <h1 class="mb-4 text-2xl font-bold text-slate-900">Estatísticas</h1>
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div class="{{ $card }}">

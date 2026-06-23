@@ -14,9 +14,9 @@
 @endphp
 
 @section('content')
-    <h1 class="mb-4 text-xl font-bold text-slate-900">Logs de auditoria</h1>
+    <h1 class="mb-4 text-2xl font-bold text-slate-900">Logs de auditoria</h1>
 
-    <div class="overflow-hidden rounded-lg bg-white ring-1 ring-slate-200">
+    <div class="overflow-hidden rounded-xl bg-white ring-1 ring-slate-200">
         <table class="w-full text-sm">
             <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                 <tr>

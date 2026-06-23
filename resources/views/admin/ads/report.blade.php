@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="mb-4 flex items-center justify-between">
-        <h1 class="text-xl font-bold text-slate-900">{{ $ad->title }}</h1>
+        <h1 class="text-2xl font-bold text-slate-900">{{ $ad->title }}</h1>
         <a href="{{ route('admin.publicidades.index') }}" class="text-sm text-slate-500 hover:underline">← Voltar</a>
     </div>
 

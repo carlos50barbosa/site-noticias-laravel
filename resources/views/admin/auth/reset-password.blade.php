@@ -1,36 +1,35 @@
 <x-auth-layout title="Redefinir senha">
-    <h1 class="mb-4 text-lg font-semibold text-slate-800">Redefinir senha</h1>
+    <div class="mb-6 text-center">
+        <h1 class="text-2xl font-bold text-slate-900">Redefinir senha</h1>
+        <p class="mt-1 text-sm text-slate-500">Crie uma nova senha para sua conta</p>
+    </div>
 
-    <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
+    <form method="POST" action="{{ route('password.store') }}" class="space-y-5">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
-            <label for="email" class="block text-sm font-medium text-slate-700">E-mail</label>
+            <label for="email" class="mb-1 block text-sm font-medium text-slate-700">E-mail</label>
             <input id="email" name="email" type="email" value="{{ old('email', $email) }}" required readonly
-                   class="mt-1 w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600">
-            @error('email')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+                   class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-slate-600 outline-none">
+            @error('email')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
         </div>
 
         <div>
-            <label for="password" class="block text-sm font-medium text-slate-700">Nova senha</label>
-            <input id="password" name="password" type="password" required autocomplete="new-password"
-                   class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <label for="password" class="mb-1 block text-sm font-medium text-slate-700">Nova senha</label>
+            <input id="password" name="password" type="password" required autocomplete="new-password" placeholder="••••••••"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">
+            @error('password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
         </div>
 
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-slate-700">Confirmar nova senha</label>
-            <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
-                   class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
+            <label for="password_confirmation" class="mb-1 block text-sm font-medium text-slate-700">Confirmar nova senha</label>
+            <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="••••••••"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">
         </div>
 
         <button type="submit"
-                class="w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800">
+                class="w-full rounded-lg bg-slate-900 px-4 py-2.5 font-medium text-white transition hover:bg-slate-700 disabled:opacity-60">
             Redefinir senha
         </button>
     </form>

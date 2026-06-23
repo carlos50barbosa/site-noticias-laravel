@@ -4,11 +4,11 @@
 
 @section('content')
     <div class="mb-4 flex items-center justify-between">
-        <h1 class="text-xl font-bold text-slate-900">Publicidades</h1>
-        <a href="{{ route('admin.publicidades.create') }}" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Novo anúncio</a>
+        <h1 class="text-2xl font-bold text-slate-900">Publicidades</h1>
+        <a href="{{ route('admin.publicidades.create') }}" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">Novo anúncio</a>
     </div>
 
-    <div class="overflow-hidden rounded-lg bg-white ring-1 ring-slate-200">
+    <div class="overflow-hidden rounded-xl bg-white ring-1 ring-slate-200">
         <table class="w-full text-sm">
             <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                 <tr>

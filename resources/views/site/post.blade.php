@@ -49,106 +49,113 @@
 @endpush
 
 @section('content')
-    <div class="grid gap-8 lg:grid-cols-3">
-        <article class="lg:col-span-2">
+    <div class="mx-auto max-w-3xl px-4 py-10">
+        <article>
             @if ($post->category)
                 <a href="{{ route('categoria', $post->category->slug) }}"
                    class="text-sm font-semibold uppercase tracking-wide text-sky-700 hover:underline">{{ $post->category->name }}</a>
             @endif
 
-            <h1 class="mt-1 text-3xl font-extrabold leading-tight text-slate-900">{{ $post->title }}</h1>
-
-            <div class="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-500">
-                @if ($post->author)
-                    Por <a href="{{ route('autor', $post->author->id) }}" class="font-medium text-slate-700 hover:underline">{{ $post->author->name }}</a> ·
-                @endif
-                <time datetime="{{ $post->published_at?->toIso8601String() }}">
-                    {{ $post->published_at?->isoFormat('D [de] MMMM [de] YYYY') }}
-                </time>
-            </div>
+            <h1 class="mt-2 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">{{ $post->title }}</h1>
 
             @if ($post->excerpt)
-                <p class="mt-4 text-lg text-slate-600">{{ $post->excerpt }}</p>
+                <p class="mt-4 text-xl leading-relaxed text-slate-600">{{ $post->excerpt }}</p>
             @endif
 
-            @if ($cover)
-                <img src="{{ $cover }}" alt="{{ $post->title }}"
-                     class="mt-6 aspect-video w-full rounded-lg object-cover">
-            @endif
-
-            <div class="article-content mt-6">
-                {!! $post->content !!}
+            <div class="mt-4 flex items-center gap-2 text-sm text-slate-500">
+                <span>
+                    Por
+                    @if ($post->author)
+                        <a href="{{ route('autor', $post->author->id) }}" class="font-medium text-slate-700 hover:underline">{{ $post->author->name }}</a>
+                    @else
+                        <span class="font-medium text-slate-700">Redação</span>
+                    @endif
+                </span>
+                @if ($post->published_at)
+                    <span aria-hidden="true">·</span>
+                    <time datetime="{{ $post->published_at->toIso8601String() }}">{{ $post->published_at->isoFormat('DD [de] MMMM [de] YYYY') }}</time>
+                @endif
             </div>
 
-            <x-ad placement="ARTICLE" class="my-8" />
+            @if ($cover)
+                <div class="relative mt-6 aspect-[16/9] overflow-hidden rounded-2xl bg-slate-100">
+                    <img src="{{ $cover }}" alt="{{ $post->title }}" class="absolute inset-0 h-full w-full object-cover">
+                </div>
+            @endif
+
+            <div class="article-content mt-8">
+                {!! $post->content !!}
+            </div>
 
             @if ($post->tags->isNotEmpty())
                 <div class="mt-8 flex flex-wrap gap-2">
                     @foreach ($post->tags as $tag)
                         <a href="{{ route('tag', $tag->slug) }}"
-                           class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700 hover:bg-slate-200">#{{ $tag->name }}</a>
+                           class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600 transition hover:bg-slate-200">#{{ $tag->name }}</a>
                     @endforeach
                 </div>
             @endif
+        </article>
 
-            {{-- Comentários --}}
-            <section class="mt-10 border-t border-slate-200 pt-6">
-                <h2 class="mb-4 text-lg font-bold text-slate-900">Comentários ({{ $comments->count() }})</h2>
+        <x-ad placement="ARTICLE" class="my-8" />
 
-                @if (session('comment_status'))
-                    <div class="mb-4 rounded-md bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('comment_status') }}</div>
-                @endif
-                @if (session('comment_error'))
-                    <div class="mb-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{{ session('comment_error') }}</div>
-                @endif
+        {{-- Leia também --}}
+        @if ($related->isNotEmpty())
+            <section class="mt-12 border-t border-slate-200 pt-8">
+                <h2 class="mb-6 text-xl font-bold text-slate-900">Leia também</h2>
+                <div class="grid gap-8 sm:grid-cols-3">
+                    @foreach ($related as $item)
+                        <x-post-card :post="$item" size="sm" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
 
-                <form method="POST" action="{{ route('comentarios.store', $post) }}" class="mb-6 space-y-3">
+        {{-- Comentários --}}
+        <section class="mt-12 border-t border-slate-200 pt-8">
+            <h2 class="mb-6 text-xl font-bold text-slate-900">Comentários ({{ $comments->count() }})</h2>
+
+            <div class="mb-8 space-y-4">
+                @forelse ($comments as $comment)
+                    <div class="rounded-lg bg-slate-50 p-4 ring-1 ring-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium text-slate-900">{{ $comment->author_name }}</span>
+                            <span class="text-xs text-slate-400">{{ $comment->created_at?->isoFormat('DD [de] MMMM [de] YYYY') }}</span>
+                        </div>
+                        <p class="mt-1 whitespace-pre-line text-sm text-slate-700">{{ $comment->content }}</p>
+                    </div>
+                @empty
+                    <p class="text-sm text-slate-500">Seja o primeiro a comentar.</p>
+                @endforelse
+            </div>
+
+            <h3 class="mb-3 font-semibold text-slate-900">Deixe seu comentário</h3>
+
+            @if (session('comment_status'))
+                <p class="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{{ session('comment_status') }}</p>
+            @else
+                <form method="POST" action="{{ route('comentarios.store', $post) }}" class="space-y-3">
                     @csrf
                     <div>
                         <input name="author_name" value="{{ old('author_name') }}" placeholder="Seu nome" required
-                               class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
+                               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">
                         @error('author_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <textarea name="content" rows="3" placeholder="Escreva um comentário..." required
-                                  class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">{{ old('content') }}</textarea>
+                        <textarea name="content" rows="3" placeholder="Escreva seu comentário…" required
+                                  class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">{{ old('content') }}</textarea>
                         @error('content')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
-                    <button type="submit" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Enviar comentário</button>
+                    @if (session('comment_error'))
+                        <p class="text-sm text-red-600">{{ session('comment_error') }}</p>
+                    @endif
+                    <button type="submit" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60">Comentar</button>
                 </form>
-
-                <div class="space-y-4">
-                    @forelse ($comments as $comment)
-                        <div class="border-b border-slate-100 pb-3">
-                            <div class="text-sm font-semibold text-slate-800">{{ $comment->author_name }}</div>
-                            <div class="text-xs text-slate-400">{{ $comment->created_at?->isoFormat('D [de] MMM [de] YYYY, HH:mm') }}</div>
-                            <p class="mt-1 text-sm text-slate-700">{{ $comment->content }}</p>
-                        </div>
-                    @empty
-                        <p class="text-sm text-slate-400">Seja o primeiro a comentar.</p>
-                    @endforelse
-                </div>
-            </section>
-
-            <div class="mt-10">
-                <a href="{{ route('home') }}" class="text-sm text-sky-700 hover:underline">← Voltar à home</a>
-            </div>
-        </article>
-
-        <aside class="lg:col-span-1">
-            @if ($related->isNotEmpty())
-                <section class="rounded-xl bg-white p-5 ring-1 ring-slate-200">
-                    <h2 class="mb-3 text-lg font-bold text-slate-900">Leia também</h2>
-                    <ul class="space-y-4">
-                        @foreach ($related as $item)
-                            <li>
-                                <a href="{{ route('noticia', $item->slug) }}" class="font-medium text-slate-800 hover:underline">{{ $item->title }}</a>
-                                <p class="mt-1 text-xs text-slate-500">{{ $item->published_at?->isoFormat('D [de] MMM [de] YYYY') }}</p>
-                            </li>
-                        @endforeach
-                    </ul>
-                </section>
             @endif
-        </aside>
+        </section>
+
+        <div class="mt-10 border-t border-slate-200 pt-6">
+            <a href="{{ route('home') }}" class="text-sm text-sky-700 hover:underline">← Voltar para a home</a>
+        </div>
     </div>
 @endsection

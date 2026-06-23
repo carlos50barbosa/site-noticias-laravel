@@ -13,8 +13,8 @@
 
 @section('content')
     <div class="mb-4 flex items-center justify-between">
-        <h1 class="text-xl font-bold text-slate-900">Notícias</h1>
-        <a href="{{ route('admin.noticias.create') }}" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Nova notícia</a>
+        <h1 class="text-2xl font-bold text-slate-900">Notícias</h1>
+        <a href="{{ route('admin.noticias.create') }}" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">Nova notícia</a>
     </div>
 
     <form method="GET" class="mb-4 flex flex-wrap gap-2">
@@ -35,7 +35,7 @@
         <button type="submit" class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm hover:bg-slate-50">Filtrar</button>
     </form>
 
-    <div class="overflow-hidden rounded-lg bg-white ring-1 ring-slate-200">
+    <div class="overflow-hidden rounded-xl bg-white ring-1 ring-slate-200">
         <table class="w-full text-sm">
             <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                 <tr>

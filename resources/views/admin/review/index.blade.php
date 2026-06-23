@@ -3,7 +3,7 @@
 @section('title', 'Revisão')
 
 @section('content')
-    <h1 class="mb-4 text-xl font-bold text-slate-900">Fila de revisão</h1>
+    <h1 class="mb-4 text-2xl font-bold text-slate-900">Fila de revisão</h1>
 
     @if ($posts->isEmpty())
         <p class="rounded-md bg-white p-8 text-center text-slate-400 ring-1 ring-slate-200">Nenhuma notícia aguardando revisão.</p>

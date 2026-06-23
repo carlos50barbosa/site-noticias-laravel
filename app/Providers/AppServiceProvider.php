@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Enums\CommentStatus;
+use App\Enums\PostStatus;
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Post;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -25,9 +30,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Configurações do site disponíveis em todas as views públicas.
+        // Configurações do site + categorias (nav do header) em todas as views públicas.
         View::composer(['layouts.public', 'site.*'], function ($view) {
             $view->with('settings', SiteSetting::current());
+            $view->with('navCategories', Category::orderBy('name')->get());
+        });
+
+        // Badges de pendências (revisão e comentários) na sidebar do admin.
+        View::composer('layouts.admin', function ($view) {
+            $view->with('pendingReviewCount', Post::where('status', PostStatus::PENDING)->count());
+            $view->with('pendingCommentsCount', Comment::where('status', CommentStatus::PENDING)->count());
         });
 
         // Gates de papel (verificados no servidor em toda ação).
