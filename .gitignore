@@ -14,7 +14,8 @@
 /.zed
 /auth.json
 /node_modules
-/public/build
+# public/build é versionado de propósito: o servidor (HostGator) não tem Node,
+# então os assets compilados (incl. fonte Geist) são entregues via Git.
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage
