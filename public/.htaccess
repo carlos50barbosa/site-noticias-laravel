@@ -5,6 +5,13 @@
 
     RewriteEngine On
 
+    # Força HTTPS (redireciona http -> https). Compatível com proxy (X-Forwarded-Proto).
+    # Só redireciona quando NÃO é https, evitando loop. Ignora localhost (dev).
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
