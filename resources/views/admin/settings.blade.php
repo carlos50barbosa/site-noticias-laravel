@@ -19,17 +19,33 @@
                 <div data-image-field>
                     <span class="block text-sm font-medium text-slate-700">Logo</span>
                     <input type="hidden" data-url name="logo_url" value="{{ old('logo_url', $settings->logo_url) }}">
-                    <div class="mt-2 rounded-md bg-slate-800 p-3">
-                        <img data-preview src="{{ $settings->logo_url }}" alt="Logo" class="max-h-12 {{ $settings->logo_url ? '' : 'hidden' }}">
-                    </div>
-                    <input type="file" data-file accept="image/*" class="mt-2 w-full text-sm">
+                    <label class="group mt-2 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-5 text-center transition hover:border-sky-400 hover:bg-sky-50">
+                        <img data-preview src="{{ $settings->logo_url }}" alt="Logo" class="max-h-16 w-auto object-contain {{ $settings->logo_url ? '' : 'hidden' }}">
+                        <span class="text-sm text-slate-500">
+                            <svg class="mx-auto mb-1 h-6 w-6 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+                            </svg>
+                            <span class="font-medium text-sky-700">Clique para enviar</span> ou trocar a logo
+                            <span class="mt-0.5 block text-xs text-slate-400">PNG, JPG ou SVG</span>
+                        </span>
+                        <input type="file" data-file accept="image/*" class="hidden">
+                    </label>
                 </div>
 
                 <div data-image-field>
                     <span class="block text-sm font-medium text-slate-700">Ícone (favicon)</span>
-                    <img data-preview src="{{ $settings->favicon_url }}" alt="Favicon" class="mt-2 h-12 w-12 rounded {{ $settings->favicon_url ? '' : 'hidden' }}">
                     <input type="hidden" data-url name="favicon_url" value="{{ old('favicon_url', $settings->favicon_url) }}">
-                    <input type="file" data-file accept="image/*" class="mt-2 w-full text-sm">
+                    <label class="group mt-2 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-5 text-center transition hover:border-sky-400 hover:bg-sky-50">
+                        <img data-preview src="{{ $settings->favicon_url }}" alt="Favicon" class="h-12 w-12 rounded object-contain {{ $settings->favicon_url ? '' : 'hidden' }}">
+                        <span class="text-sm text-slate-500">
+                            <svg class="mx-auto mb-1 h-6 w-6 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+                            </svg>
+                            <span class="font-medium text-sky-700">Clique para enviar</span> ou trocar o ícone
+                            <span class="mt-0.5 block text-xs text-slate-400">PNG ou ICO (quadrado)</span>
+                        </span>
+                        <input type="file" data-file accept="image/*" class="hidden">
+                    </label>
                 </div>
             </div>
 

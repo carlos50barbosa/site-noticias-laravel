@@ -40,6 +40,10 @@ Route::middleware(RecordVisit::class)->group(function () {
     Route::get('/busca', [SearchController::class, 'index'])->name('busca');
 });
 
+// Páginas institucionais (estáticas)
+Route::view('/politica-de-privacidade', 'site.privacidade')->name('privacidade');
+Route::view('/termos-de-uso', 'site.termos')->name('termos');
+
 // Interações públicas (sem contagem de visita)
 Route::post('/noticia/{post}/comentarios', [CommentController::class, 'store'])->name('comentarios.store');
 Route::get('/ads/{ad}/click', [AdClickController::class, 'click'])->name('ads.click');

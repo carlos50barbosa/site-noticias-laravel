@@ -21,12 +21,11 @@
 <body class="flex min-h-screen flex-col bg-white text-slate-900">
     <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-            <a href="{{ route('home') }}" class="flex items-center" aria-label="{{ $settings->site_name }}">
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="{{ $settings->site_name }}">
                 @if ($settings->logo_url)
                     <img src="{{ $settings->logo_url }}" alt="{{ $settings->site_name }}" class="h-9 w-auto object-contain">
-                @else
-                    <span class="text-xl font-extrabold tracking-tight text-slate-900">{{ $settings->site_name }}</span>
                 @endif
+                <span class="text-xl font-extrabold tracking-tight text-slate-900">{{ $settings->site_name }}</span>
             </a>
 
             <div class="flex items-center gap-3">
@@ -67,9 +66,20 @@
     </main>
 
     <footer class="mt-16 border-t border-slate-200 bg-slate-50">
-        <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm text-slate-500 sm:flex-row">
-            <p>© {{ now()->year }} {{ $settings->site_name }}. Todos os direitos reservados.</p>
-            <a href="{{ url('/admin') }}" class="hover:text-slate-800">Painel administrativo</a>
+        <div class="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-500">
+            <div class="flex flex-col items-center justify-between gap-3 sm:flex-row">
+                <p>© {{ now()->year }} {{ $settings->site_name }}. Todos os direitos reservados.</p>
+                <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+                    <a href="{{ route('privacidade') }}" class="hover:text-slate-800">Política de Privacidade</a>
+                    <a href="{{ route('termos') }}" class="hover:text-slate-800">Termos de Uso</a>
+                    <a href="{{ url('/admin') }}" class="hover:text-slate-800">Painel</a>
+                </nav>
+            </div>
+            <p class="mt-4 text-center text-xs text-slate-400 sm:text-right">
+                Desenvolvido por:
+                <a href="https://servicostech.com.br/" target="_blank" rel="noopener"
+                   class="font-medium text-slate-500 transition hover:text-slate-800 hover:underline">Serviços Tech</a>
+            </p>
         </div>
     </footer>
 </body>
