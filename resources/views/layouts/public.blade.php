@@ -19,21 +19,30 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="flex min-h-screen flex-col bg-white text-slate-900">
-    <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur" x-data="{ search: false }">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="{{ $settings->site_name }}">
+            <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-2.5" aria-label="{{ $settings->site_name }}">
                 @if ($settings->logo_url)
-                    <img src="{{ $settings->logo_url }}" alt="{{ $settings->site_name }}" class="h-9 w-auto object-contain">
+                    <img src="{{ $settings->logo_url }}" alt="{{ $settings->site_name }}" class="h-9 w-auto shrink-0 object-contain">
                 @endif
-                <span class="text-xl font-extrabold tracking-tight text-slate-900">{{ $settings->site_name }}</span>
+                <span class="truncate text-lg font-extrabold tracking-tight text-slate-900 sm:text-xl">{{ $settings->site_name }}</span>
             </a>
 
-            <div class="flex items-center gap-3">
+            <div class="flex shrink-0 items-center gap-2 sm:gap-3">
                 <form action="{{ route('busca') }}" method="GET" class="hidden sm:block sm:w-56">
                     <input type="search" name="q" value="{{ request('q') }}" placeholder="Buscar notícias…"
                            aria-label="Buscar notícias"
                            class="w-full rounded-full border border-slate-300 px-4 py-1.5 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">
                 </form>
+
+                <button type="button" @click="search = !search"
+                        class="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 sm:hidden"
+                        :aria-expanded="search" aria-label="Buscar notícias">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path stroke-linecap="round" d="m20 20-3.5-3.5" />
+                    </svg>
+                </button>
 
                 @auth
                     <div class="flex items-center gap-1">
@@ -47,6 +56,15 @@
                     </div>
                 @endauth
             </div>
+        </div>
+
+        {{-- Busca no mobile: alterna pelo ícone de lupa --}}
+        <div x-show="search" x-cloak class="border-t border-slate-100 px-4 py-2 sm:hidden">
+            <form action="{{ route('busca') }}" method="GET">
+                <input type="search" name="q" value="{{ request('q') }}" placeholder="Buscar notícias…"
+                       aria-label="Buscar notícias"
+                       class="w-full rounded-full border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">
+            </form>
         </div>
 
         <nav class="border-t border-slate-100">

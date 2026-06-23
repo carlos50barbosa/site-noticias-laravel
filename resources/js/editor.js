@@ -118,12 +118,14 @@ export function initEditors(root = document) {
  * Campos de upload de imagem simples (capa, logo, favicon, banner de anúncio).
  * Estrutura esperada: container [data-image-field] com input[data-file],
  * input[data-url] (hidden, enviado no form) e img[data-preview].
+ * Opcional: button[data-remove] limpa a imagem (envia URL vazia ao salvar).
  */
 export function initImageFields(root = document) {
     root.querySelectorAll('[data-image-field]').forEach((field) => {
         const fileInput = field.querySelector('input[data-file]');
         const urlInput = field.querySelector('input[data-url]');
         const preview = field.querySelector('[data-preview]');
+        const removeButton = field.querySelector('[data-remove]');
 
         fileInput?.addEventListener('change', async (event) => {
             const file = event.target.files[0];
@@ -137,9 +139,20 @@ export function initImageFields(root = document) {
                     preview.src = url;
                     preview.classList.remove('hidden');
                 }
+                removeButton?.classList.remove('hidden');
             } catch {
                 alert('Falha no upload da imagem.');
             }
+        });
+
+        removeButton?.addEventListener('click', () => {
+            if (urlInput) urlInput.value = '';
+            if (fileInput) fileInput.value = '';
+            if (preview) {
+                preview.removeAttribute('src');
+                preview.classList.add('hidden');
+            }
+            removeButton.classList.add('hidden');
         });
     });
 }

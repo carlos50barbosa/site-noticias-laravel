@@ -26,4 +26,14 @@ class Youtube
     {
         return "https://img.youtube.com/vi/{$id}/hqdefault.jpg";
     }
+
+    /**
+     * URL de embed (privacy-enhanced). Com $autoplay para tocar ao abrir.
+     */
+    public static function embedUrl(string $id, bool $autoplay = false): string
+    {
+        $params = $autoplay ? '?autoplay=1&rel=0' : '?rel=0';
+
+        return "https://www.youtube-nocookie.com/embed/{$id}{$params}";
+    }
 }

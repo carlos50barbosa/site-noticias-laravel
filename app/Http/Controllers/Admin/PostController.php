@@ -123,7 +123,7 @@ class PostController extends Controller
             'title' => $data['title'],
             'excerpt' => $data['excerpt'] ?? null,
             'content' => Sanitizer::clean($data['content']),
-            'cover_image_url' => $data['cover_image_url'] ?? null,
+            'cover_image_url' => ($data['cover_image_url'] ?? null) ?: null,
             'category_id' => $data['category_id'] ?? null,
             'status' => $status,
             'pinned' => $user->canPublish() ? $request->boolean('pinned') : false,

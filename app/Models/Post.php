@@ -99,6 +99,15 @@ class Post extends Model
     }
 
     /**
+     * ID do 1º vídeo do YouTube embutido no conteúdo (se houver) — usado para
+     * tocar a notícia direto nas listagens, sem abrir a página completa.
+     */
+    public function videoId(): ?string
+    {
+        return Youtube::id($this->content);
+    }
+
+    /**
      * Resumo para cards/SEO: o excerpt informado ou um trecho do conteúdo.
      */
     public function excerptText(int $max = 160): string

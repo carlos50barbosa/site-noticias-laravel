@@ -113,12 +113,17 @@
                 @error('tags')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
             </div>
 
+            @php($coverUrl = old('cover_image_url', $post->cover_image_url))
             <div class="rounded-lg bg-white p-4 ring-1 ring-slate-200" data-image-field>
                 <span class="block text-sm font-medium text-slate-700">Imagem de capa</span>
-                <input type="hidden" data-url name="cover_image_url" value="{{ old('cover_image_url', $post->cover_image_url) }}">
-                <img data-preview src="{{ $post->cover_image_url }}" alt="Capa"
-                     class="mt-2 aspect-video w-full rounded-md object-cover {{ $post->cover_image_url ? '' : 'hidden' }}">
-                <input type="file" data-file accept="image/*" class="mt-2 w-full text-sm">
+                <input type="hidden" data-url name="cover_image_url" value="{{ $coverUrl }}">
+                <img data-preview src="{{ $coverUrl }}" alt="Capa"
+                     class="mt-2 aspect-video w-full rounded-md object-cover {{ $coverUrl ? '' : 'hidden' }}">
+                <div class="mt-2 flex items-center gap-3">
+                    <input type="file" data-file accept="image/*" class="w-full text-sm">
+                    <button type="button" data-remove
+                            class="shrink-0 text-sm font-medium text-red-600 hover:underline {{ $coverUrl ? '' : 'hidden' }}">Remover</button>
+                </div>
                 @error('cover_image_url')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
             </div>
 

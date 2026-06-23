@@ -18,7 +18,6 @@
             $hero = $latest->first();
             $secondary = $latest->slice(1, 2);
             $recent = $latest->slice(3);
-            $heroCover = $hero->coverImage();
         @endphp
 
         <div class="mx-auto max-w-6xl px-4 py-8">
@@ -38,19 +37,10 @@
             {{-- Destaque principal --}}
             <section class="grid gap-8 lg:grid-cols-3">
                 <article class="group lg:col-span-2">
-                    <a href="{{ route('noticia', $hero->slug) }}" class="block">
-                        <div class="relative aspect-[16/9] overflow-hidden rounded-2xl bg-slate-100">
-                            @if ($heroCover)
-                                <img src="{{ $heroCover }}" alt="{{ $hero->title }}"
-                                     class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105">
-                            @else
-                                <div class="flex h-full items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300 text-slate-400">
-                                    Sem imagem
-                                </div>
-                            @endif
-                        </div>
+                    <x-post-media :post="$hero" rounded="rounded-2xl" />
+                    <a href="{{ route('noticia', $hero->slug) }}" class="mt-3 block">
                         @if ($hero->category)
-                            <span class="mt-3 inline-block text-xs font-semibold uppercase tracking-wide text-sky-700">{{ $hero->category->name }}</span>
+                            <span class="inline-block text-xs font-semibold uppercase tracking-wide text-sky-700">{{ $hero->category->name }}</span>
                         @endif
                         <h1 class="mt-1 text-3xl font-extrabold leading-tight text-slate-900 transition group-hover:text-sky-800 sm:text-4xl">{{ $hero->title }}</h1>
                         <p class="mt-3 text-lg text-slate-600">{{ $hero->excerptText(200) }}</p>

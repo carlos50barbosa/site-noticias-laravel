@@ -35,8 +35,8 @@
         <button type="submit" class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm hover:bg-slate-50">Filtrar</button>
     </form>
 
-    <div class="overflow-hidden rounded-xl bg-white ring-1 ring-slate-200">
-        <table class="w-full text-sm">
+    <div class="overflow-x-auto rounded-xl bg-white ring-1 ring-slate-200">
+        <table class="w-full min-w-[640px] text-sm">
             <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                 <tr>
                     <th class="px-4 py-3">Título</th>

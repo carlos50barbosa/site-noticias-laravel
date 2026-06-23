@@ -38,6 +38,17 @@ class PublicSiteTest extends TestCase
         $this->get('/')->assertOk()->assertSee('Notícia de Teste');
     }
 
+    public function test_home_plays_video_inline_for_post_with_youtube(): void
+    {
+        $this->publishedPost([
+            'content' => '<p>Veja:</p><div data-youtube-video><iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"></iframe></div>',
+        ]);
+
+        $this->get('/')->assertOk()
+            ->assertSee('Reproduzir vídeo')
+            ->assertSee('youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1', false);
+    }
+
     public function test_draft_is_not_listed_on_home(): void
     {
         $this->publishedPost([
